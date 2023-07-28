@@ -2,10 +2,8 @@ export interface AddTypeInitialState {
   toasts: string[];
   userInfo: undefined | { email: string };
   currentPokemonTab: string;
-
+  isLoading: boolean;
 };
-
-
 
 export interface PokemonTypeInitialState {
   allPokemon: undefined | genericPokemonType[];
@@ -26,7 +24,6 @@ export interface currentPokemonType {
   pokemonAbilities: { abilities: string[]; moves: string[] };
   evolutionLevel: number
 }
-
 
 export interface genericPokemonType {
   name: string,

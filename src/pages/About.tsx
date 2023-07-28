@@ -1,11 +1,11 @@
-import Wrapper from '../sections/Wrapper';
-import { FaGithub } from 'react-icons/fa';
-import avatarImage from '../assets/camel.jpg';
+import Wrapper from "../sections/Wrapper";
+import { FaGithub } from "react-icons/fa";
+import avatarImage from "../assets/camel.jpg";
 
 function About() {
   return (
-    <div className='profile'>
-      <img src={avatarImage} alt="avatar" className='profile-image'/>
+    <div className="profile">
+      <img src={avatarImage} alt="avatar" className="profile-image" />
       <h1 className="profile-text">Hi I am Camel</h1>
       <h2 className="profile-text">The creator of this awesome pokedex</h2>
       <h4 className="profile-text">
@@ -17,7 +17,7 @@ function About() {
         </a>
       </div>
     </div>
-  )
+  );
 }
 
 export default Wrapper(About);

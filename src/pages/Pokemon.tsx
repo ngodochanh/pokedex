@@ -1,21 +1,30 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import Wrapper from "../sections/Wrapper";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import axios from "axios";
 import { extractColors } from "extract-colors";
-import { pokemonRoute, pokemonSpeciesRoute, pokemonTabs } from "../utils/Constants";
-import { defaultImages, images } from "../utils/getPokemonImages";
+import {
+  pokemonRoute,
+  pokemonSpeciesRoute,
+  pokemonTabs,
+} from "../utils/Constants";
+import { defaultImages, images } from "../utils";
 import Description from "./PokemonsPages/Description";
 import Evolution from "./PokemonsPages/Evolution";
 import CapableMoves from "./PokemonsPages/CapableMoves";
 import Location from "./PokemonsPages/Location";
 import { setCurrentPokemon } from "../app/slices/PokemonSlice";
+import Loader from "../components/Loader";
 
 function Pokemon() {
   const params = useParams();
   const dispatch = useAppDispatch();
   const { currentPokemonTab } = useAppSelector(({ app }) => app);
+  const [isDataLoading, setIsDataLoading] = useState(true);
+  const currentPokemon = useAppSelector(
+    ({ pokemon: { currentPokemon } }) => currentPokemon
+  );
 
   const getRecursiveEvolution: any = useCallback(
     (evolutionChain: any, level: number, evolutionData: any) => {
@@ -89,33 +98,32 @@ function Pokemon() {
         ({ pokemon }) => pokemon.name === data.name
       ).level;
       dispatch(
-        setCurrentPokemon(
-          {
-            id: data.id,
-            name: data.name,
-            types: data.types.map(
-              ({ type: { name } }: { type: { name: string } }) => name
-            ),
-            image,
-            stats: data.stats.map(
-              ({
-                stat,
-                base_stat,
-              }: {
-                stat: { name: string };
-                base_stat: number;
-              }) => ({
-                name: stat.name,
-                value: base_stat,
-              })
-            ),
-            encounters,
-            evolutionLevel,
-            evolution,
-            pokemonAbilities,
-          }
-        )
+        setCurrentPokemon({
+          id: data.id,
+          name: data.name,
+          types: data.types.map(
+            ({ type: { name } }: { type: { name: string } }) => name
+          ),
+          image,
+          stats: data.stats.map(
+            ({
+              stat,
+              base_stat,
+            }: {
+              stat: { name: string };
+              base_stat: number;
+            }) => ({
+              name: stat.name,
+              value: base_stat,
+            })
+          ),
+          encounters,
+          evolutionLevel,
+          evolution,
+          pokemonAbilities,
+        })
       );
+      setIsDataLoading(false);
     },
     [getEvolutionData, params.id, dispatch]
   );
@@ -150,12 +158,20 @@ function Pokemon() {
     getPokemonInfo(imageElemet.src);
   }, [params, getPokemonInfo]);
 
-  return <div>
-    {currentPokemonTab === pokemonTabs.description && <Description />}
-    {currentPokemonTab === pokemonTabs.evolution && <Evolution />}
-    {currentPokemonTab === pokemonTabs.moves && <CapableMoves />}
-    {currentPokemonTab === pokemonTabs.locations && <Location />}
-  </div>;
+  return (
+    <>
+      {!isDataLoading && currentPokemon ? (
+        <>
+          {currentPokemonTab === pokemonTabs.description && <Description />}
+          {currentPokemonTab === pokemonTabs.evolution && <Evolution />}
+          {currentPokemonTab === pokemonTabs.locations && <Location />}
+          {currentPokemonTab === pokemonTabs.moves && <CapableMoves />}
+        </>
+      ) : (
+        <Loader />
+      )}
+    </>
+  );
 }
 
 export default Wrapper(Pokemon);

@@ -1,6 +1,6 @@
 import { FaPlus } from 'react-icons/fa';
 import { pokemonTypeInterface, userPokemonsType, pokemonStatType } from '../utils/Types';
-import { pokemonTypes } from '../utils/getPokemonTypes';
+import { pokemonTypes } from '../utils';
 import { removeFromCompare } from '../app/slices/PokemonSlice'
 import { useAppDispatch } from '../app/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -118,7 +118,7 @@ function CompareContainer({
       {
         isEmpty && (
           <div className="empty">
-            <button>
+            <button onClick={() => navigate("/search")}>
               <FaPlus />
             </button>
             <h3>Add Pokemon to Comparison</h3>

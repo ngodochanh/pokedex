@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom';
 function Footer() {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const { currentPokemonTab } = useAppSelector(({ app }) => app);
+  const currentPokemonTab  = useAppSelector(({ app: { currentPokemonTab} }) => currentPokemonTab);
   const handleLogout = () => {
     signOut(firebaseAuth);
     dispatch(setUserStatus(undefined));

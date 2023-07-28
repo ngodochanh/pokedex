@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
-import pokeballIcon from '../assets/pokeball-icon.png';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect } from "react";
+import pokeballIcon from "../assets/pokeball-icon.png";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { Link, useLocation } from "react-router-dom";
+import { useAppDispatch } from "../app/hooks";
+import { resetRandomPokemons } from "../app/slices/PokemonSlice";
 
 function Navbar() {
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   const navigationRoutes = [
     {
@@ -30,17 +33,18 @@ function Navbar() {
   ];
 
   useEffect(() => {
-    const index = navigationRoutes.findIndex(({route}) => location.pathname.includes(route));
+    const index = navigationRoutes.findIndex(({ route }) =>
+      location.pathname.includes(route)
+    );
 
     ul(index);
-  }, [location.pathname, navigationRoutes])
-  
+  }, [location.pathname, navigationRoutes]);
 
-  function ul(index:number) {
-    const underlines = document.querySelectorAll<HTMLElement>('.underline');
+  function ul(index: number) {
+    const underlines = document.querySelectorAll<HTMLElement>(".underline");
 
     for (let i = 0; i < underlines.length; i++) {
-      underlines[i].style.transform="translate3d(" + index * 100 + '%,0,0)';
+      underlines[i].style.transform = "translate3d(" + index * 100 + "%,0,0)";
     }
   }
 
@@ -55,15 +59,17 @@ function Navbar() {
           <div className="underline"></div>
           <div className="underline"></div>
           <div className="underline"></div>
-          {
-            navigationRoutes.map(({ name, route }, index) => {
-              return (
-                <Link to={route} key={index}>
-                  <li>{name}</li>
-                </Link>
-              )
-            })
-          }
+          {navigationRoutes.map(({ name, route }, index) => {
+            return (
+              <Link
+                to={route}
+                key={index}
+                onClick={() => dispatch(resetRandomPokemons())}
+              >
+                <li>{name}</li>
+              </Link>
+            );
+          })}
         </ul>
       </div>
 
@@ -71,7 +77,7 @@ function Navbar() {
         <GiHamburgerMenu />
       </div>
     </nav>
-  )
+  );
 }
 
 export default Navbar;

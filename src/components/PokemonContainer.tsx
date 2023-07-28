@@ -1,5 +1,3 @@
-
-
 function PokemonContainer({ image }: {image: string}) {
   return (
     <div className='circle-container'>
