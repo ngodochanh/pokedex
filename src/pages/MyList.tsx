@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import Wrapper from '../sections/Wrapper';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import Login from '../components/Login';
-import PokemonCardGrid  from '../components/PokemonCardGird'
-import { getUserPokemons } from '../app/reducers/getUserPokemons';
+import { useEffect } from "react";
+import Wrapper from "../sections/Wrapper";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import Login from "../components/Login";
+import PokemonCardGrid from "../components/PokemonCardGird";
+import { getUserPokemons } from "../app/reducers/getUserPokemons";
 
 function MyList() {
   const { userInfo } = useAppSelector(({ app }) => app);
@@ -12,20 +12,13 @@ function MyList() {
 
   useEffect(() => {
     dispatch(getUserPokemons());
-  }, [userInfo, dispatch])
-
-  useEffect(() => {
-    console.log({ userPokemons })
-  }, [userPokemons])
+  }, [userInfo, dispatch]);
 
   return (
-    <div className='list'>
-      {
-        userInfo ? <PokemonCardGrid pokemons={userPokemons} /> : <Login />
-      }
-
+    <div className="list">
+      {userInfo ? <PokemonCardGrid pokemons={userPokemons} /> : <Login />}
     </div>
-  )
+  );
 }
 
 export default Wrapper(MyList);
